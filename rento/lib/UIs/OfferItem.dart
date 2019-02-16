@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 
-class ItemPage extends StatefulWidget {
+class OfferItem extends StatefulWidget {
   final String itemID;
-  ItemPage(this.itemID);
+  OfferItem(this.itemID);
   State<StatefulWidget> createState() {
     return MyApp1State(itemID);
   }
 }
 
-class MyApp1State extends State<ItemPage> {
+class MyApp1State extends State<OfferItem> {
   final String itemID;
   MyApp1State(this.itemID);
   DateTime _date = new DateTime.now();
   TimeOfDay _time = new TimeOfDay.now();
   DateTime _fdate = new DateTime.now();
   TimeOfDay _ftime = new TimeOfDay.now();
+  String timeUnit = "Select Time Unit";
 
   StreamSubscription _subscriptionTodo;
 
@@ -99,6 +100,71 @@ class MyApp1State extends State<ItemPage> {
         Expanded(
           child: ListView(
             children: <Widget>[
+              new ListTile(
+                title: new TextField(
+                  decoration: new InputDecoration(
+                      icon: new Icon(Icons.edit),
+                      labelText: "Item Name",
+                      hintText: "Enter the Item name..."),
+                ),
+              ),
+              new ListTile(
+                title: new TextField(
+                  decoration: new InputDecoration(
+                      icon: new Icon(Icons.edit),
+                      labelText: "Description",
+                      hintText: ""),
+                ),
+              ),
+              new ListTile(
+                title: new TextField(
+                  decoration: new InputDecoration(
+                      icon: new Icon(Icons.edit),
+                      labelText: "Price",
+                      hintText: "Enter the Item name..."),
+                ),
+              ),
+              new Card(
+                child: new Column (children: <Widget>[
+                new ListTile(
+                title: new Text("Per",
+                    style: TextStyle(
+                      letterSpacing: 0.5,
+                      fontSize: 20.0,
+                    )),
+              ),
+                  new ListTile(
+                    leading: Icon(Icons.attach_money),
+                    title: new DropdownButton<String>(
+                      hint: new Text(timeUnit),
+                      items: <String>["Day", "Hour"].map((String value) {
+                        return new DropdownMenuItem<String>(
+                            value: value, child: new Text(value));
+                      }).toList(),
+                      onChanged: (value) {
+                        timeUnit = value;
+                        this.setState(() {});
+                      },
+                    ),
+                  ),
+                ]),
+              ),
+
+
+
+              // new ListTile(
+              //   title: new DropdownButton<String>(
+              //     hint: new Text(timeUnit),
+              //     items: <String>["Day", "Hour"].map((String value) {
+              //       return new DropdownMenuItem<String>(
+              //           value: value, child: new Text(value));
+              //     }).toList(),
+              //     onChanged: (value) {
+              //       timeUnit = value;
+              //       this.setState(() {});
+              //     },
+              //   ),
+              // ),
               new ListTile(
                 title: new Text(
                   "Description",
@@ -194,9 +260,10 @@ class MyApp1State extends State<ItemPage> {
           title: new Text(
         "$_name",
       )),
+      resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
-          itemImage(_path),
+          //itemImage(_path),
           center,
           new Builder(
             builder: (BuildContext context) {
